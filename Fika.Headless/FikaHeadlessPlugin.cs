@@ -47,7 +47,7 @@ namespace Fika.Headless;
 [BepInDependency("com.SPT.custom", BepInDependency.DependencyFlags.HardDependency)]
 public class FikaHeadlessPlugin : BaseUnityPlugin
 {
-    public const string HeadlessVersion = "1.4.15";
+    public const string HeadlessVersion = "1.5.0";
 
     public static FikaHeadlessPlugin Instance { get; private set; }
     public static ManualLogSource FikaHeadlessLogger;
@@ -157,7 +157,7 @@ public class FikaHeadlessPlugin : BaseUnityPlugin
             else if (!FikaBackendUtils.IsTransit)
             {
                 Resources.UnloadUnusedAssets().Await();
-                MemoryControllerClass.Collect(2, GCCollectionMode.Forced, true, true, true);
+                InGameMemoryManagement.Collect(2, GCCollectionMode.Forced, true, true, true);
             }
         }
     }
@@ -192,7 +192,7 @@ public class FikaHeadlessPlugin : BaseUnityPlugin
     {
         var targets = new HashSet<string>
         {
-            nameof(TarkovApplication_method_16_Patch),
+            nameof(TarkovApplication_InitNotificationManager_Patch),
             nameof(MenuScreen_Awake_Patch),
             nameof(TarkovApplication_LocalGameCreator_Patch)
         };
@@ -451,7 +451,7 @@ public class FikaHeadlessPlugin : BaseUnityPlugin
         return Task.CompletedTask;
     }
 
-    private async Task BeginFikaStartRaid(StartHeadlessRequest request, ISession session, TarkovApplication tarkovApplication)
+    private async Task BeginFikaStartRaid(StartHeadlessRequest request, IEftSession session, TarkovApplication tarkovApplication)
     {
         RaidSettings raidSettings = new()
         {
@@ -527,7 +527,7 @@ public class FikaHeadlessPlugin : BaseUnityPlugin
             Singleton<JobScheduler>.Instance.SetForceMode(true);
             Logger.LogInfo($"Starting raid on {raidSettings.SelectedLocation.Name.Localized()}");
             _ = WaitForPlayersToConnect();
-            await tarkovApplication.method_41(raidSettings.TimeAndWeatherSettings);
+            await tarkovApplication.LocalGameMatching(raidSettings.TimeAndWeatherSettings);
             Logger.LogInfo("Raid init complete, starting raid");
             CurrentRaidCount++;
         }
