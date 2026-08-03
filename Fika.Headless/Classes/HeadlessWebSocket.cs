@@ -79,6 +79,11 @@ public class HeadlessWebSocket
             return;
         }
 
+        if (e.IsPing)
+        {
+            return;
+        }
+
         if (string.IsNullOrEmpty(e.Data))
         {
             _logger.LogWarning("WebSocket_OnMessage:: Data was null");
