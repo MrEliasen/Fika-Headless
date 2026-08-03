@@ -11,12 +11,12 @@ namespace Fika.Headless.Patches.TarkovAppPatches;
 /// <summary>
 /// Stops the <see cref="MainMenuShowOperation"/> from trying to set the hideout inventory
 /// </summary>
-public class MainMenuShowOperation_method_5_Transpiler : ModulePatch
+public class MainMenuShowOperation_CG_Init_Transpiler : ModulePatch
 {
     protected override MethodBase GetTargetMethod()
     {
         return typeof(MainMenuShowOperation.CG_Init)
-            .GetMethod(nameof(MainMenuShowOperation.CG_Init.MoveNext));
+            .GetMethod(nameof(MainMenuShowOperation.CG_Init.MoveNext), BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
     [PatchTranspiler]
