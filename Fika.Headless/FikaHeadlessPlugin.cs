@@ -51,6 +51,7 @@ public class FikaHeadlessPlugin : BaseUnityPlugin
 
     public static FikaHeadlessPlugin Instance { get; private set; }
     public static ManualLogSource FikaHeadlessLogger;
+    public static bool PlayerDisposeError;
     public static bool IsRunningWindows
     {
         get
@@ -567,6 +568,12 @@ public class FikaHeadlessPlugin : BaseUnityPlugin
     public void OnReady()
     {
         ToggleFramelimit(true);
+
+        if (PlayerDisposeError)
+        {
+            Application.Quit();
+            return;
+        }
 
         if (CurrentRaidCount == 0)
         {

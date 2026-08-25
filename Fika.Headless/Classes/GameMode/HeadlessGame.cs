@@ -633,6 +633,7 @@ public class HeadlessGame : AbstractGame, IFikaGame, IClientHearingTable
                 }
                 catch (Exception ex)
                 {
+                    FikaHeadlessPlugin.PlayerDisposeError = true;
                     _logger.LogError($"Stop: There was an error while disposing player: {ex}");
                 }
             }
