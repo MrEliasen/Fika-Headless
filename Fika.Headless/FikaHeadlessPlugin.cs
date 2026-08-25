@@ -571,6 +571,7 @@ public class FikaHeadlessPlugin : BaseUnityPlugin
 
         if (PlayerDisposeError)
         {
+            Logger.LogError("There were some errors in the last raid while disposing of players. This is most likely caused by any content mods that adds new equipment. The headless will now shut down to prevent memory leaks.");
             Application.Quit();
             return;
         }
